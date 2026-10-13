@@ -1,19 +1,24 @@
 //assign variables to the DOM element
 const inputField = document.querySelector(".input-field");
-inputField.value = "Hello";
+
 const searchBtn = document.querySelector(".search-button");
 const output = document.querySelector(".output");
 //wikipedia API url
 const url =
-  "https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&origin=*&srsearch=hello";
+  "https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&origin=*&srsearch=";
 
 //added click event listener to listen button
 searchBtn.addEventListener("click", (e) => {
-  fetch(url)
+  let searchTerm = inputField.value;
+  let tempUrl = url + searchTerm;
+
+  fetch(tempUrl)
     .then((response) => response.json())
     .then((data) => {
       //console.log(data.query.search);
-      
+      output.innerHTML = `<div>Results for<strong> ${searchTerm}</strong></div>`;
+      output.innerHTML += `<div>Total Results <strong>${data.query.searchinfo.totalhits}</strong></div>`;
+
       //more simplified version to get main data from API
       displayOutput(data.query.search);
     })
